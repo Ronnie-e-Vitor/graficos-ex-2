@@ -6,7 +6,8 @@ import { Dimensions } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
 
-const RegistroAtrasoScreen = ( { navigation }) => {
+
+const RegistroAtrasoScreen = ( { navigation, route }) => {
   const [data, setData] = useState({
     labels: [],
     datasets: [{ data: [] }],
@@ -45,7 +46,7 @@ const RegistroAtrasoScreen = ( { navigation }) => {
             case 'Robotica':
               return 'Robótica';
             case 'Administração':
-              return 'Administração'; 
+              return 'Adm'; 
             default:
               return curso; // Retorna o curso original se não houver caso
           }
@@ -64,7 +65,7 @@ const RegistroAtrasoScreen = ( { navigation }) => {
       });
   }, []);
 
-
+  const { nome, userId} = route.params; 
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -78,9 +79,9 @@ const RegistroAtrasoScreen = ( { navigation }) => {
           width={screenWidth - 20}
           height={220}
           chartConfig={{
-            backgroundGradientFrom: '#9527d9',
-            backgroundGradientTo: '#7245d9',
-            decimalPlaces: 2,
+            backgroundGradientFrom: '#9621de',
+            backgroundGradientTo: '#7148cf',
+            decimalPlaces: 0,
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             style: {
@@ -103,8 +104,8 @@ const RegistroAtrasoScreen = ( { navigation }) => {
         height={220}
         yAxisLabel=""
         chartConfig={{
-          backgroundColor: '#000000',
-          backgroundGradientFrom: '#0000ff',
+          backgroundColor: '#9621de',
+          backgroundGradientFrom: '#7148cf',
           backgroundGradientTo: '#4fb7cd',
           decimalPlaces: 2,
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -117,7 +118,7 @@ const RegistroAtrasoScreen = ( { navigation }) => {
       />
 
 <TouchableOpacity
-onPress={() => navigation.navigate('Home',{nome: nome, userId: userId, curso: curso, modulo: modulo })}
+onPress={() => navigation.navigate('Home', {nome: nome, userId: userId })}
 style={{backgroundColor: '#55cf79', padding: 4, marginTop:10, borderRadius:3, width:50, display:'flex', alignItems:'center', paddingHorizontal:50, color:'white', fontWeight:'600', fontSize:'1.2rem'}}
 >
   voltar

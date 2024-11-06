@@ -109,7 +109,7 @@ function HomeScreen({ route, navigation }) {
         style={styles.checkButton}
         onPress={() => {
           if (alunoId) {
-            navigation.navigate('Graficos');
+            navigation.navigate('Graficos', {nome: nome, userId: userId }  );
           } else {
             Alert.alert('Erro', 'ID do aluno não disponível.');
           }
