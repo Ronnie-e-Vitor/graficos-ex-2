@@ -4,8 +4,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import confimationImage from '../assets/confirmation.png'
 
 
-const confirmationScreen = ({navigation}) => {
-  
+const confirmationScreen = ({route, navigation}) => {
+  const { nome, userId } = route.params; // Acesse route.params corretamente
+
   return (
     <View style={styles.container}>
         <View style={{width:'100%'} }>
@@ -18,12 +19,12 @@ const confirmationScreen = ({navigation}) => {
 
         <View style={styles.text}>
           <Text style={{fontSize:32, fontWeight:'bold', textAlign:'center'}}>Tudo certo!</Text>
-          <Text style={{color:"#a2a3a5"}}>Sua conta foi cadastrada com sucesso!</Text>
+          <Text style={{color:"#a2a3a5"}}> Atraso do usuário {nome} cadastrado com sucesso!</Text>
         </View>
 
         <View style={{ flexDirection:'column', justifyContent:'center', width:'100%', gap:7, marginTop:windowWidth * 0.1 }}> 
               <TouchableOpacity style={{backgroundColor: "#1194e4",  padding:18, paddingHorizontal: 40, justifyContent:'center', alignItems:'center', borderRadius:5}} onPress={() => navigation.navigate('Login')}>
-                 <Text style={{fontSize:19, color:'#fff', fontWeight:'bold'}} onPress={() => navigation.navigate('login')}>Continuar</Text>
+                 <Text style={{fontSize:19, color:'#fff', fontWeight:'bold'}} onPress={() => navigation.navigate('Login')}>Voltar para o inicio</Text>
               </TouchableOpacity>
           </View>
       

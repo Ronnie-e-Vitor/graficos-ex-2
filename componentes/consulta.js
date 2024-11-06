@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ListaAtrasosAlunoScreen = ({ route }) => {
-  const { userId } = route.params; // ID do usuário cujos atrasos estamos exibindo
+  // const { userId } = route.params; // ID do usuário cujos atrasos estamos exibindo
   const [atrasos, setAtrasos] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,7 +14,7 @@ const ListaAtrasosAlunoScreen = ({ route }) => {
   const fetchAtrasos = async () => {
     try {
       // Chamar a API para buscar os atrasos do aluno pelo ID
-      const response = await fetch(`http://192.168.18.25:8000/api/usuarios/${userId}/chegadas`);
+      const response = await fetch(`http://127.0.0.1:8000/api/usuarios/${2}/chegadas`);
       const data = await response.json();
       setAtrasos(data); // Atualizar o estado com os dados dos atrasos
       setLoading(false); // Indicar que os dados foram carregados
@@ -32,6 +33,7 @@ const ListaAtrasosAlunoScreen = ({ route }) => {
   }
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <FlatList
         data={atrasos}
@@ -46,6 +48,7 @@ const ListaAtrasosAlunoScreen = ({ route }) => {
         )}
       />
     </View>
+    </ScrollView>
   );
 };
 

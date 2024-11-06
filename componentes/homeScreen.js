@@ -5,7 +5,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner'; // Importa o scanner de Q
 
 
 function HomeScreen({ route, navigation }) {
-  const { nome, userId } = route.params; // Assume que você está passando userId como "id" no parâmetro
+  const { nome, userId} = route.params; // Assume que você está passando userId como "id" no parâmetro
   const [modalVisible, setModalVisible] = useState(false);
   const [alunoId, setAlunoId] = useState(userId);
   const [hasPermission, setHasPermission] = useState(null);
@@ -34,11 +34,11 @@ function HomeScreen({ route, navigation }) {
     setModalVisible(true); // Abre o modal de confirmação
   };
 
-  const registrarAtraso = async (usuarioId) => {
-    console.log("Registrando atraso para o usuário:", usuarioId); // Log do ID do usuário
+  const registrarAtraso = async () => {
+    console.log("Registrando atraso para o usuário:", userId); // Log do ID do usuário
   
     try {
-      const response = await fetch(`http://192.168.18.25:8000/api/usuarios/${usuarioId}/registrar-chegada`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/usuarios/${userId}/registrar-chegada`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function HomeScreen({ route, navigation }) {
       Alert.alert('Erro', `Erro: ${error.message}`);
     }
   };
-  
+
 
   const handleRegistrarAtraso = () => {
     setScannerVisible(true); // Exibir o scanner quando o botão for clicado
@@ -75,17 +75,20 @@ function HomeScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+
       <View style={styles.info}>
         <View style={{ width: '100%' }}>
           <Image source={logo} style={{ width: '100%', height: 400 }} />
         </View>
         <View style={styles.elementos}>
-          <Text style={styles.welcome}>Bem-Vindo</Text>
-          <Text style={styles.nick}>{nome}</Text>
+          <Text style={styles.welcome}>Bem-Vindo <Text style={styles.nick}>{nome}</Text></Text>
+          
         </View>
       </View>
 
-      <TouchableOpacity style={styles.checkButton} onPress={handleRegistrarAtraso}>
+      <TouchableOpacity style={styles.checkButton}         onPress={() => {
+             setModalVisible(true)
+        }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold', color: "white" }}>Cadastrar Atraso</Text>
       </TouchableOpacity>
 
@@ -102,6 +105,19 @@ function HomeScreen({ route, navigation }) {
         <Text style={{ fontSize: 20, fontWeight: 'bold', color: "white" }}>Ver atrasos</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity
+        style={styles.checkButton}
+        onPress={() => {
+          if (alunoId) {
+            navigation.navigate('Graficos');
+          } else {
+            Alert.alert('Erro', 'ID do aluno não disponível.');
+          }
+        }}
+      >
+        <Text style={{ fontSize: 20, fontWeight: 'bold', color: "white" }}>Ver gráficos</Text>
+      </TouchableOpacity>
+
       {/* Modal de confirmação */}
       <Modal
         transparent={true}
@@ -113,7 +129,11 @@ function HomeScreen({ route, navigation }) {
           <View style={styles.modalContainer}>
             <Text style={styles.modalText}>Tem certeza que deseja registrar o atraso?</Text>
             <View style={styles.modalButtons}>
-              <Button title="Confirmar" onPress={confirmarRegistro} />
+              <Button title="Confirmar"  onPress={async () => {
+                await setModalVisible(false)
+          await registrarAtraso(); // Chama a função para registrar o atraso
+          navigation.navigate('ConfirmAtr', { nome: nome, userId: userId }); // Navega para a próxima tela
+        }} />
               <Button title="Cancelar" onPress={() => setModalVisible(false)} />
             </View>
           </View>
@@ -185,10 +205,10 @@ const styles = StyleSheet.create({
     },
 
     checkButton:{
-      padding:20,
+      padding:13,
       backgroundColor:'#1F618D', 
       width:"80%",
-      marginTop:15,
+      marginBottom:10,
       borderRadius:6,
       alignItems:"center"
        },

@@ -19,7 +19,7 @@ const LoginScreen = ({navigation}) => {
   const verificar = async () => {
     setCarregando(true)
     try {
-      const response = await fetch('http://192.168.18.25:8000/api/login', {
+      const response = await fetch('http://127.0.0.1:8000/api/login', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -39,8 +39,10 @@ const LoginScreen = ({navigation}) => {
         console.log('Dados do usuário:', jsonResponse.data); 
         const userId = jsonResponse.userId;
         const nome = jsonResponse.nome;
+        const modulo = jsonResponse.modulo;
+        const curso = jsonResponse.curso;
 // Verifique a estrutura da resposta
-        navigation.navigate('Home',{nome: nome, userId: userId}); 
+        navigation.navigate('Home',{nome: nome, userId: userId, curso: curso, modulo: modulo }); 
       } else {
         console.log('Erro', `Erro: ${jsonResponse.message || 'Não foi  salvar os dados'}`);
       }
@@ -56,7 +58,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
 
-    
+    <ScrollView>
     
     <View style={styles.container}>
          {carregando ? (
@@ -122,18 +124,20 @@ const LoginScreen = ({navigation}) => {
 
       <TouchableOpacity onPress={verificar}style={{padding:20, backgroundColor:'#8b2fdc', width:"100%", marginTop:15, borderRadius:6, alignItems:"center"}}>
         <Text style={{fontSize:20, fontWeight:'bold', color:"white"}}>Enviar</Text>
-
-
       </TouchableOpacity>
-      
 
+      <TouchableOpacity  onPress={() => {
+          navigation.navigate('Cadastro'); // Navega para a próxima tela
+        }}>
+        <Text style={{marginTop:5,fontSize:10, fontWeight:'200', color:"purple"}}> se não tem conta <Text style={{color:"blue"}}>cadastre-se</Text></Text>
+      </TouchableOpacity>
       </>
 
     )}
 
     </View>
   
-   
+    </ScrollView>
   );
 };
 
